@@ -1,6 +1,8 @@
 // ORM-TOWN USA
 // All the database-querying goodies to export for all the convenience not typing out SQL queries can provide
 
+var connection = require("../config/connection.js");
+
 // But first, a little housekeeping-->first a Question Mark then an Object-to-SQL helper functions 
 function questionMarkMaker(number) {
     var arr = [];
@@ -33,7 +35,7 @@ function objToSql(ob) {
 };
 
 var orm = {
-    all: function(tableInput, cb) {
+    selectAll: function(tableInput, cb) {
         var queryString = "SELECT * FROM " + tableInput + ";";
         connection.query(queryString, function(err, result) {
             if (err){
@@ -42,7 +44,7 @@ var orm = {
             cb(result);
         });
     },
-    create: function(table, columns, values, cb) {
+    insertOne: function(table, columns, values, cb) {
         var queryString = " INSERT INTO " + table;
 
         queryString += " (";
@@ -62,7 +64,7 @@ var orm = {
             cb(result);
         });
     },
-    update: function(table, objColumnVals, condition, cb) {
+    updateOne: function(table, objColumnVals, condition, cb) {
         var queryString = "UPDATE " + table;
 
         queryString += " SET ";
@@ -71,7 +73,7 @@ var orm = {
         queryString += condition;
 
         console.log("How we're looking: " + queryString);
-        connection.query(queryStrong, function(err, result){
+        connection.query(queryString, function(err, result){
             if (err){
                 throw err;
             }
